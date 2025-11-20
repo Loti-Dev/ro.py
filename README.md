@@ -13,12 +13,12 @@ ro.py is an asynchronous, object-oriented wrapper for the Roblox web API.
 ## Installation
 To install the latest stable version of ro.py, run the following command:
 ```
-python3 -m pip install roblox
+uv pip install roblox
 ```
 
 To install the latest **unstable** version of ro.py, install [git-scm](https://git-scm.com/downloads) and run the following:
 ```
-python3 -m pip install git+https://github.com/ro-py/ro.py.git
+uv pip install git+https://github.com/loti-dev/ro.py.git
 ```
 
 ## Support

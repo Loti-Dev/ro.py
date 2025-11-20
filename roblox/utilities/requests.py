@@ -4,8 +4,11 @@ This module contains classes used internally by ro.py for sending requests to Ro
 
 """
 
+
 from __future__ import annotations
 
+import ssl
+import sys
 import asyncio
 from json import JSONDecodeError
 from typing import Dict
@@ -26,17 +29,20 @@ class CleanAsyncClient(AsyncClient):
     """
     This is a clean-on-delete version of httpx.AsyncClient.
     """
-
-    def __init__(self):
-        super().__init__()
+    def __init__(self, **kwargs):
+        # roblox seems to be dropping connetions if ssl isnt set to 1.2 
+        if sys.platform != "win32": 
+            ssl_context = ssl.create_default_context()
+            ssl_context.minimum_version = ssl.TLSVersion.TLSv1_2
+            ssl_context.maximum_version = ssl.TLSVersion.TLSv1_2
+            kwargs["verify"] = ssl_context
+        super().__init__(**kwargs)
 
     def __del__(self):
         try:
             asyncio.get_event_loop().create_task(self.aclose())
         except RuntimeError:
             pass
-
-
 class Requests:
     """
     A special request object that implements special functionality required to connect to some Roblox endpoints.
